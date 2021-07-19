@@ -1,34 +1,51 @@
 package com.github.rycardofarias.ordem_de_servico.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.rycardofarias.ordem_de_servico.domain.enuns.Prioridade;
 import com.github.rycardofarias.ordem_de_servico.domain.enuns.Status;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 public class OrdemServico {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataAbertura;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataFechamento;
-    private Prioridade prioridade;
+    private Integer prioridade;
     private String observacoes;
-    private Status status;
+    private Integer status;
+
+    @ManyToOne
+    @JoinColumn(name = "tecnico_id")
     private Tecnico tecnico;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
     public OrdemServico() {
         super();
+        this.setDataAbertura(LocalDateTime.now());
+        this.setPrioridade(Prioridade.BAIXA);
+        this.setStatus(Status.ABERTO);
     }
 
-    public OrdemServico(Integer id, LocalDateTime dataAbertura, LocalDateTime dataFechamento, Prioridade prioridade, String observacoes, Status status, Tecnico tecnico, Cliente cliente) {
+    public OrdemServico(Integer id, Prioridade prioridade, String observacoes, Status status, Tecnico tecnico, Cliente cliente) {
         super();
         this.id = id;
-        this.dataAbertura = dataAbertura;
-        this.dataFechamento = dataFechamento;
-        this.prioridade = prioridade;
+        this.setDataAbertura(LocalDateTime.now());
+        this.prioridade = (prioridade == null) ? 0 : prioridade.getCod();
         this.observacoes = observacoes;
-        this.status = status;
+        this.status = (status == null) ? 0 : status.getCod();
         this.tecnico = tecnico;
         this.cliente = cliente;
     }
@@ -57,12 +74,24 @@ public class OrdemServico {
         this.dataFechamento = dataFechamento;
     }
 
+    public static Prioridade toEnum(Integer cod){
+        if( cod == null){
+            return null;
+        }
+        for (Prioridade x : Prioridade.values()){
+            if(cod.equals(x.getCod())){
+                return x;
+            }
+        }
+        throw new IllegalArgumentException("Prioridade inválida!" + cod);
+    }
+
     public Prioridade getPrioridade() {
-        return prioridade;
+        return Prioridade.toEnum(this.prioridade);
     }
 
     public void setPrioridade(Prioridade prioridade) {
-        this.prioridade = prioridade;
+        this.prioridade = prioridade.getCod();
     }
 
     public String getObservacoes() {
@@ -74,11 +103,11 @@ public class OrdemServico {
     }
 
     public Status getStatus() {
-        return status;
+        return Status.toEnum(this.status);
     }
 
     public void setStatus(Status status) {
-        this.status = status;
+        this.status = status.getCod();
     }
 
     public Tecnico getTecnico() {
