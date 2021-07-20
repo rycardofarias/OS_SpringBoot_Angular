@@ -15,6 +15,9 @@ public class TecnicoDTO implements Serializable {
     private String cpf;
     private String telefone;
 
+    public  TecnicoDTO(){
+        super();
+    }
     public TecnicoDTO(Tecnico obj){
         super();
         this.id  = obj.getId();
