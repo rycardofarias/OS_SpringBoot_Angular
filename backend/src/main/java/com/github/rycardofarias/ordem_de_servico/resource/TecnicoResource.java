@@ -1,6 +1,6 @@
 package com.github.rycardofarias.ordem_de_servico.resource;
 
-import com.github.rycardofarias.ordem_de_servico.domain.Tecnico;
+import com.github.rycardofarias.ordem_de_servico.dto.TecnicoDTO;
 import com.github.rycardofarias.ordem_de_servico.service.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,8 @@ public class TecnicoResource {
     private TecnicoService service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Tecnico> findById(@PathVariable Integer id){
-        Tecnico obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<TecnicoDTO> findById(@PathVariable Integer id){
+        TecnicoDTO objDTO = new TecnicoDTO(service.findById(id));
+        return ResponseEntity.ok().body(objDTO);
     }
 }
