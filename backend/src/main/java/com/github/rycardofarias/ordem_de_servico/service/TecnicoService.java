@@ -8,6 +8,7 @@ import com.github.rycardofarias.ordem_de_servico.service.exceptions.ObjectNotFou
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,5 +41,16 @@ public class TecnicoService {
             return obj;
         }
         return null;
+    }
+    public Tecnico update(Integer id, @Valid TecnicoDTO objDTO) {
+        Tecnico oldObj = findById(id);
+
+        if (findByCPF(objDTO) != null && findByCPF(objDTO).getId() != id){
+            throw new DataIntegratyViolationException("CPF já cadastrado na base de dados.");
+        }
+        oldObj.setNome(objDTO.getNome());
+        oldObj.setCpf(objDTO.getCpf());
+        oldObj.setTelefone(objDTO.getTelefone());
+        return tecnicoRepository.save(oldObj);
     }
 }
