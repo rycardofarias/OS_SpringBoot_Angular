@@ -53,4 +53,12 @@ public class TecnicoService {
         oldObj.setTelefone(objDTO.getTelefone());
         return tecnicoRepository.save(oldObj);
     }
+
+    public void delete(Integer id) {
+        Tecnico obj = findById(id);
+        if(obj.getList().size() > 0){
+            throw new DataIntegratyViolationException("Tecnico possui Ordem de Serviço, não pode ser delatado!");
+        }
+        tecnicoRepository.deleteById(id);
+    }
 }
