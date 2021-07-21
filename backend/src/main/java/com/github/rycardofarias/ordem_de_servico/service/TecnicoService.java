@@ -1,7 +1,9 @@
 package com.github.rycardofarias.ordem_de_servico.service;
 
+import com.github.rycardofarias.ordem_de_servico.domain.Pessoa;
 import com.github.rycardofarias.ordem_de_servico.domain.Tecnico;
 import com.github.rycardofarias.ordem_de_servico.dto.TecnicoDTO;
+import com.github.rycardofarias.ordem_de_servico.repository.PessoaRepository;
 import com.github.rycardofarias.ordem_de_servico.repository.TecnicoRepository;
 import com.github.rycardofarias.ordem_de_servico.service.exceptions.DataIntegratyViolationException;
 import com.github.rycardofarias.ordem_de_servico.service.exceptions.ObjectNotFoundException;
@@ -17,6 +19,9 @@ public class TecnicoService {
 
     @Autowired
     private TecnicoRepository tecnicoRepository;
+
+    @Autowired
+    private PessoaRepository pessoaRepository;
 
     public Tecnico findById(Integer id){
         Optional<Tecnico> obj = tecnicoRepository.findById(id);
@@ -35,8 +40,8 @@ public class TecnicoService {
                     new Tecnico(null, objDTO.getNome(), objDTO.getCpf(), objDTO.getTelefone())
             );
     }
-    private Tecnico findByCPF(TecnicoDTO objDTO){
-        Tecnico obj = tecnicoRepository.findByCPF(objDTO.getCpf());
+    private Pessoa findByCPF(TecnicoDTO objDTO){
+        Pessoa obj = pessoaRepository.findByCPF(objDTO.getCpf());
         if(obj != null){
             return obj;
         }
