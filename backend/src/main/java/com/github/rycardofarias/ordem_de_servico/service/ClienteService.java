@@ -64,4 +64,12 @@ public class ClienteService {
 
         return clienteRepository.save(oldObj);
     }
+
+    public void delete(Integer id) {
+        Cliente obj = findById(id);
+        if(obj.getList().size() > 0){
+            throw new DataIntegratyViolationException("Cliente possui Ordem de Serviço, não pode ser delatado!");
+        }
+        clienteRepository.deleteById(id);
+    }
 }
