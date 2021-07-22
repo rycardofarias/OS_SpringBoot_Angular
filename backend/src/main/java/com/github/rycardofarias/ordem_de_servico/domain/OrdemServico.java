@@ -6,7 +6,6 @@ import com.github.rycardofarias.ordem_de_servico.domain.enuns.Status;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 public class OrdemServico {
@@ -20,6 +19,7 @@ public class OrdemServico {
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataFechamento;
+
     private Integer prioridade;
     private String observacoes;
     private Integer status;
