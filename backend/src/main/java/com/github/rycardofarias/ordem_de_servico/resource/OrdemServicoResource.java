@@ -4,11 +4,11 @@ import com.github.rycardofarias.ordem_de_servico.dto.OrdemServicoDTO;
 import com.github.rycardofarias.ordem_de_servico.service.OrdemServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,4 +32,16 @@ public class OrdemServicoResource{
         return ResponseEntity.ok().body(list);
     }
 
+    @PostMapping
+    public ResponseEntity<OrdemServicoDTO> create( @RequestBody OrdemServicoDTO ordemServicoDTO){
+        ordemServicoDTO = new OrdemServicoDTO(ordemServicoService.create(ordemServicoDTO));
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(ordemServicoDTO.getId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping
+    public ResponseEntity<OrdemServicoDTO> update (@Valid @RequestBody OrdemServicoDTO ordemServicoDTO){
+        ordemServicoDTO = new OrdemServicoDTO(ordemServicoService.update(ordemServicoDTO));
+        return ResponseEntity.ok().body(ordemServicoDTO);
+    }
 }

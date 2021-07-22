@@ -3,6 +3,7 @@ package com.github.rycardofarias.ordem_de_servico.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.rycardofarias.ordem_de_servico.domain.OrdemServico;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -17,6 +18,8 @@ public class OrdemServicoDTO implements Serializable {
     private LocalDateTime dataFechamento;
 
     private Integer prioridade;
+
+    @NotEmpty(message = "O campo OBERVAÇÕES é requerido")
     private String observacoes;
     private Integer status;
     private Integer tecnico;
