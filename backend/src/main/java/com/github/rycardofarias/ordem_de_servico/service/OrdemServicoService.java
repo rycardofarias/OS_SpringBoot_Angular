@@ -6,6 +6,7 @@ import com.github.rycardofarias.ordem_de_servico.service.exceptions.ObjectNotFou
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,5 +20,8 @@ public class OrdemServicoService {
         return obj.orElseThrow(() -> new ObjectNotFoundException(
                 "Objeto não encontrado! Id: " + id + ", Tipo: " +OrdemServico.class.getName()
         ));
+    }
+    public List<OrdemServico> findAll() {
+        return ordemServicoRepository.findAll();
     }
 }

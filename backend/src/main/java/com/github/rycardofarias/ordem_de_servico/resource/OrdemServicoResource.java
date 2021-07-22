@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping(value = "/ordemservico")
 public class OrdemServicoResource{
@@ -21,4 +24,12 @@ public class OrdemServicoResource{
         OrdemServicoDTO ordemServicoDTO = new OrdemServicoDTO(ordemServicoService.findById(id));
         return ResponseEntity.ok().body(ordemServicoDTO);
     }
+
+    @GetMapping
+    public  ResponseEntity<List<OrdemServicoDTO>> findAll(){
+        List<OrdemServicoDTO> list = ordemServicoService.findAll()
+                .stream().map(obj -> new OrdemServicoDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(list);
+    }
+
 }
