@@ -1,3 +1,4 @@
+import { TecnicoService } from './../../../../services/tecnico.service';
 import { Tecnico } from './../../../../models/tecnico';
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
@@ -17,7 +18,17 @@ export class TecnicoReadComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  constructor(private service : TecnicoService) {}
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.findAll();
+  }
+
+  findAll(): void{
+    this.service.findAll().subscribe((resposta) =>{
+      this.tecnicos = resposta;
+      console.log(this.tecnicos);
+    })
   }
 }
